@@ -29,7 +29,7 @@ buddy.h
 buddy.c
 lz4.h
 lz4.c
-tw-state.c
+tw-state.cpp
 
 ross-extern.h
 ross-global.c
@@ -40,23 +40,23 @@ ross.h
 ross-types.h
 
 tw-eventq.h
-tw-event.c
+tw-event.cpp
 
 tw-opts.h
-tw-opts.c
+tw-opts.cpp
 
 tw-pe.cpp
 tw-kp.cpp
 tw-lp.cpp
 
 tw-timing.h
-tw-timing.c
+tw-timing.cpp
 
-tw-sched.c
-tw-setup.c
-tw-signal.c
-tw-stats.c
-tw-util.c)
+tw-sched.cpp
+tw-setup.cpp
+tw-signal.cpp
+tw-stats.cpp
+tw-util.cpp)
 
 
 # ROSS VERSION INFORMATION
@@ -81,7 +81,7 @@ ENDIF(AVL_TREE)
 # memory buffers.  If it's not set to YES, it defaults to NO
 OPTION(ROSS_MEMORY "ROSS Memory Buffers (membufs)" OFF)
 IF(ROSS_MEMORY)
-  SET(ross_srcs ${ross_srcs} tw-memory.c tw-memoryq.h tw-memory.h)
+  SET(ross_srcs ${ross_srcs} tw-memory.cpp tw-memoryq.h tw-memory.h)
 ENDIF(ROSS_MEMORY)
 
 IF(USE_RIO)
