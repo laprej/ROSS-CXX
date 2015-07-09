@@ -45,9 +45,9 @@ tw-event.c
 tw-opts.h
 tw-opts.c
 
-tw-pe.c
-tw-kp.c
-tw-lp.c
+tw-pe.cpp
+tw-kp.cpp
+tw-lp.cpp
 
 tw-timing.h
 tw-timing.c
