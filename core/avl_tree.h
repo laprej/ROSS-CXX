@@ -1,4 +1,11 @@
+#ifndef ROSS_AVL_TREE_H
+#define ROSS_AVL_TREE_H
+
 #include <ross.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* Copied and modified from http://pine.cs.yale.edu/pinewiki/C/AvlTree google cache */
 
@@ -43,3 +50,9 @@ tw_event * avlDelete(AvlTree *t, tw_event *key);
 AvlTree avl_alloc(void);
 
 void avl_free(AvlTree t);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* ROSS_AVL_TREE_H */

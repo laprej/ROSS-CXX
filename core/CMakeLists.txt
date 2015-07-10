@@ -23,7 +23,7 @@ network-${NETWORK}.h
 network-${NETWORK}.c
 
 hash-quadratic.h
-hash-quadratic.c
+hash-quadratic.cpp
 
 buddy.h
 buddy.c
