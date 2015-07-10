@@ -4,7 +4,7 @@ INCLUDE_DIRECTORIES(${ROSS_SOURCE_DIR} ${ROSS_BINARY_DIR})
 SET(ross_srcs
 
 queue/tw-queue.h
-queue/${QUEUE}.c
+queue/${QUEUE}.cpp
 
 ross-random.h
 ross-random.c
