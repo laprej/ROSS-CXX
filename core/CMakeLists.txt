@@ -7,7 +7,7 @@ queue/tw-queue.h
 queue/${QUEUE}.cpp
 
 ross-random.h
-ross-random.c
+ross-random.cpp
 rand-${RAND}.h
 rand-${RAND}.c
 
