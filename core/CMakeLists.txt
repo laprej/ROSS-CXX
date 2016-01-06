@@ -20,7 +20,7 @@ gvt/${GVT}.cpp
 
 ross-network.h
 network-${NETWORK}.h
-network-${NETWORK}.c
+network-${NETWORK}.cpp
 
 hash-quadratic.h
 hash-quadratic.cpp
