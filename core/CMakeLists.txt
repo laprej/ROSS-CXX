@@ -12,7 +12,7 @@ rand-${RAND}.h
 rand-${RAND}.cpp
 
 clock/${CLOCK}.h
-clock/${CLOCK}.c
+clock/${CLOCK}.cpp
 
 ross-gvt.h
 gvt/${GVT}.h
