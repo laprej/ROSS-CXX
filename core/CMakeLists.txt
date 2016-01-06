@@ -32,7 +32,7 @@ lz4.c
 tw-state.cpp
 
 ross-extern.h
-ross-global.c
+ross-global.cpp
 
 ross-inline.h
 ross-kernel-inline.h
