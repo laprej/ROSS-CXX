@@ -9,7 +9,7 @@ queue/${QUEUE}.cpp
 ross-random.h
 ross-random.cpp
 rand-${RAND}.h
-rand-${RAND}.c
+rand-${RAND}.cpp
 
 clock/${CLOCK}.h
 clock/${CLOCK}.c
