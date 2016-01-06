@@ -16,7 +16,7 @@ clock/${CLOCK}.cpp
 
 ross-gvt.h
 gvt/${GVT}.h
-gvt/${GVT}.c
+gvt/${GVT}.cpp
 
 ross-network.h
 network-${NETWORK}.h
