@@ -74,7 +74,7 @@ GET_GIT_HEAD_REVISION(GIT_REFSPEC GIT_SHA1)
 # If AVL_TREE is OFF, ROSS reverts to hashing
 OPTION(AVL_TREE "Use AVL trees for optimistic mode events? (hash tabels otherwise)" ON)
 IF(AVL_TREE)
-  SET(ross_srcs ${ross_srcs} avl_tree.h avl_tree.c)
+  SET(ross_srcs ${ross_srcs} avl_tree.h avl_tree.cpp)
 ENDIF(AVL_TREE)
 
 # ROSS_MEMORY is either on or off depending on whether or not we desire
