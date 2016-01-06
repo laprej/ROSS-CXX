@@ -26,7 +26,7 @@ hash-quadratic.h
 hash-quadratic.cpp
 
 buddy.h
-buddy.c
+buddy.cpp
 lz4.h
 lz4.c
 tw-state.cpp
