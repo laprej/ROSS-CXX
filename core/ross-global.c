@@ -28,7 +28,7 @@ tw_kp		**g_tw_kp = NULL;
 int             g_tw_fossil_attempts = 0;
 unsigned int    g_tw_nRNG_per_lp = 1;
 tw_lpid         g_tw_rng_default = 1;
-tw_seed        *g_tw_rng_seed = NULL;
+tw_seed        g_tw_rng_seed = NULL;
 unsigned int	g_tw_sim_started = 0;
 size_t g_tw_msg_sz;
 size_t g_tw_delta_sz = 0;
@@ -36,9 +36,9 @@ uint32_t g_tw_buddy_alloc = 0; /**< Allocation for buddy system */
 buddy_list_bucket_t *g_tw_buddy_master = 0;
 uint32_t g_tw_avl_node_count = 18;
 
-unsigned int g_tw_lz4_knob = 1; /**< Tunable LZ4 param.  Higher = faster with
-                                 less compression. 17 is a good value for speed
-                                 with 1 being the default value. */
+/** Tunable LZ4 param.  Higher = faster with less compression.
+ 17 is a good value for speed with 1 being the default value. */
+unsigned int g_tw_lz4_knob = 17;
 
 #if ROSS_MEMORY
 unsigned int	g_tw_memory_nqueues = 64;

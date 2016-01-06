@@ -23,7 +23,7 @@ extern tw_kp	**g_tw_kp;
 extern int      g_tw_fossil_attempts;
 extern unsigned int	g_tw_nRNG_per_lp;
 extern tw_lpid		g_tw_rng_default;
-extern tw_seed		*g_tw_rng_seed;
+extern tw_seed		g_tw_rng_seed;
 extern unsigned int	g_tw_mblock;
 extern unsigned int g_tw_gvt_interval;
 extern tw_stime		g_tw_ts_end;
@@ -102,6 +102,7 @@ extern void		 tw_lp_onkp(tw_lp * lp, tw_kp * kp);
 extern void		 tw_init_lps(tw_pe * me);
 extern void tw_pre_run_lps(tw_pe * me);
 extern void tw_lp_setup_types();
+extern void tw_lp_suspend(tw_lp * lp, int do_orig_event_rc, int error_num );
 
 /*
  * tw-kp.c
@@ -133,7 +134,7 @@ extern tw_fd		 tw_pe_memory_init(tw_pe * pe, size_t n_mem,
  * tw-setup.c
  */
 extern void tw_init(int *argc, char ***argv);
-extern void tw_define_lps(tw_lpid nlp, size_t msg_sz, tw_seed * seed);
+extern void tw_define_lps(tw_lpid nlp, size_t msg_sz);
 extern void tw_run(void);
 extern void tw_end(void);
 extern tw_lpid map_onetype (tw_lpid gid);
@@ -160,7 +161,7 @@ extern void     tw_sigterm(int sig);
  */
 extern void tw_snapshot(tw_lp *lp, size_t state_sz);
 extern long tw_snapshot_delta(tw_lp *lp, size_t state_sz);
-extern void tw_snapshot_restore(tw_lp *lp, size_t state_sz, void *buffer, size_t delta_size);
+extern void tw_snapshot_restore(tw_lp *lp, size_t state_sz);
 
 /*
  * tw-timing.c

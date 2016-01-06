@@ -18,10 +18,10 @@ static const tw_optdef kernel_options[] = {
     TWOPT_STIME("end", g_tw_ts_end, "simulation end timestamp"),
     TWOPT_UINT("batch", g_tw_mblock, "messages per scheduler block"),
     TWOPT_UINT("extramem", g_tw_events_per_pe_extra, "Number of extra events allocated per PE."),
-    TWOPT_UINT("buddy_size", g_tw_buddy_alloc, "delta encoding buddy system allocation (2^X)"),
+    TWOPT_UINT("buddy-size", g_tw_buddy_alloc, "delta encoding buddy system allocation (2^X)"),
     TWOPT_UINT("lz4-knob", g_tw_lz4_knob, "LZ4 acceleration factor (higher = faster)"),
 #ifdef AVL_TREE
-    TWOPT_UINT("avl_size", g_tw_avl_node_count, "AVL Treet contians 2^avl_size nodes"),
+    TWOPT_UINT("avl-size", g_tw_avl_node_count, "AVL Tree contains 2^avl-size nodes"),
 #endif
     TWOPT_END()
 };
@@ -157,21 +157,24 @@ void map_linear(void) {
 }
 
 void map_round_robin(void) {
-    tw_pe   *pe;
+    tw_pe   * pe = g_tw_pe[0]; // ASSUMPTION: only 1 pe
 
-    int  kpid;
+    int  kpid, lpid;
     int  i;
 
-    for(i = 0; i < g_tw_nlp; i++) {
-        kpid = i % g_tw_nkp;
-        pe = tw_getpe(kpid % g_tw_npe);
+    // ASSUMPTION: g_tw_nlp is the same on each rank
+    int lp_stride = tw_nnodes();
+    int lp_offset = g_tw_mynode;
 
-        tw_lp_onpe(i, pe, g_tw_lp_offset+i);
+    for(i = 0, lpid=lp_offset; i < g_tw_nlp; i++, lpid+=lp_stride) {
+        kpid = i % g_tw_nkp;
+
+        tw_lp_onpe(i, pe, lpid);
         tw_kp_onpe(kpid, pe);
         tw_lp_onkp(g_tw_lp[i], g_tw_kp[kpid]);
 
 #if VERIFY_MAPPING
-        printf("LP %4d KP %4d PE %4d\n", i, kp->id, pe->id);
+        printf("LP %4d KP %4d PE %4d\n", lpid, kpid, pe->id);
 #endif
     }
 }
@@ -181,7 +184,7 @@ void map_round_robin(void) {
  * important global variable.  It is also set in (very few) other places,
  * but mainly just here.
  */
-void tw_define_lps(tw_lpid nlp, size_t msg_sz, tw_seed * seed) {
+void tw_define_lps(tw_lpid nlp, size_t msg_sz) {
     int  i;
 
     g_tw_nlp = nlp;
@@ -191,7 +194,6 @@ void tw_define_lps(tw_lpid nlp, size_t msg_sz, tw_seed * seed) {
 #endif
 
     g_tw_msg_sz = msg_sz;
-    g_tw_rng_seed = seed;
 
     early_sanity_check();
 
@@ -275,7 +277,7 @@ static void late_sanity_check(void) {
             tw_error(TW_LOC, "LP %u has mismatched KP and PE.", lp->id);
         }
 
-        if (!memcmp(&lp->type, &null_type, sizeof(null_type))) {
+        if (!memcmp(lp->type, &null_type, sizeof(null_type))) {
             tw_error(TW_LOC, "LP %u has no type.", lp->id);
         }
     }
@@ -440,8 +442,9 @@ static tw_pe * setup_pes(void) {
         printf("\t%-50s [Nodes (%u) x KPs (%lu)] %lu\n", "Total KPs", tw_nnodes(), g_tw_nkp, (tw_nnodes() * g_tw_nkp));
         fprintf(g_tw_csv, "%lu,", (tw_nnodes() * g_tw_nkp));
 
-        printf("\t%-50s %11lu\n", "Total LPs", (tw_nnodes() * g_tw_npe * g_tw_nlp));
-        fprintf(g_tw_csv, "%lu,", (tw_nnodes() * g_tw_npe * g_tw_nlp));
+        printf("\t%-50s %11llu\n", "Total LPs", 
+	       ((unsigned long long)tw_nnodes() * (unsigned long long)g_tw_npe * g_tw_nlp));
+        fprintf(g_tw_csv, "%llu,", ((unsigned long long)tw_nnodes() * (unsigned long long)g_tw_npe * g_tw_nlp));
 
         printf("\t%-50s %11.2lf\n", "Simulation End Time", g_tw_ts_end);
         fprintf(g_tw_csv, "%11.2lf\n", g_tw_ts_end);
