@@ -2,6 +2,7 @@
 #define INC_phold_h
 
 #include <ross.h>
+#include <boost/flyweight.hpp>
 
 	/*
 	 * PHOLD Types
@@ -12,7 +13,7 @@ typedef struct phold_message phold_message;
 
 struct phold_state
 {
-	long int	 dummy_state;
+	boost::flyweight<long>	 dummy_state;
 };
 
 struct phold_message

@@ -12,6 +12,8 @@ phold_init(phold_state * s, tw_lp * lp)
 {
 	int              i;
 
+    new (s) phold_state;
+
 	if( stagger )
 	  {
 	    for (i = 0; i < g_phold_start_events; i++)
@@ -66,6 +68,7 @@ phold_event_handler(phold_state * s, tw_bf * bf, phold_message * m, tw_lp * lp)
 		/* dest += offset_lpid; */
 		/* if(dest >= ttl_lps) */
 		/* 	dest -= ttl_lps; */
+        s->dummy_state = tw_rand_ulong(lp->rng, 0, 1000000);
 	} else
 	{
 		bf->c1 = 0;
