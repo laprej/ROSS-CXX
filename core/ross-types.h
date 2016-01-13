@@ -1,11 +1,6 @@
 #ifndef INC_ross_types_h
 #define INC_ross_types_h
 
-#include <boost/intrusive/bs_set_hook.hpp>
-#include <boost/intrusive/splaytree.hpp>
-
-namespace intrusive = boost::intrusive;
-
 /** @file ross-types.h
  *  @brief Definition of ROSS basic types
  */
@@ -276,7 +271,6 @@ typedef struct tw_out {
  * event in use.
  */
 struct tw_event {
-    intrusive::bs_set_member_hook<> felHook;
     tw_event *next;
     tw_event *prev;
 #if defined(ROSS_QUEUE_splay) || defined(ROSS_QUEUE_kp_splay)
@@ -315,10 +309,6 @@ struct tw_event {
 #endif
     tw_out *out_msgs;               /**< @brief Output messages */
 };
-
-using MemberOption = intrusive::member_hook<tw_event,
-intrusive::bs_set_member_hook<>, &tw_event::felHook>;
-using FutureEventList = intrusive::splaytree<tw_event, MemberOption>;
 
 /**
  * tw_lp @brief LP State Structure
