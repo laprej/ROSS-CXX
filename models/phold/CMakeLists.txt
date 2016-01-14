@@ -9,7 +9,7 @@ SET(phold_srcs
 phold.cpp		phold.h)
 
 ADD_EXECUTABLE(phold ${phold_srcs})
-SET_PROPERTY(TARGET phold PROPERTY CXX_STANDARD 11)
+SET_PROPERTY(TARGET phold PROPERTY CXX_STANDARD 14)
 
 IF(BGPM)
 	TARGET_LINK_LIBRARIES(phold ROSS imp_bgpm m)
