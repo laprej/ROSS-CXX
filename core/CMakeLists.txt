@@ -3,6 +3,8 @@ INCLUDE_DIRECTORIES(${ROSS_SOURCE_DIR} ${ROSS_BINARY_DIR})
 
 SET(ross_srcs
 
+ListGC.h
+
 queue/tw-queue.h
 queue/${QUEUE}.cpp
 
