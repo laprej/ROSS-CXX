@@ -310,6 +310,14 @@ struct tw_event {
     tw_out *out_msgs;               /**< @brief Output messages */
 };
 
+class LP_State {
+public:
+    virtual LP_State * clone(double ts) = 0;
+    virtual ~LP_State() { }
+};
+
+extern std::unordered_map<double, std::shared_ptr<LP_State> > theStateMap;
+
 /**
  * tw_lp @brief LP State Structure
  *
@@ -333,7 +341,7 @@ struct tw_lp {
     */
     tw_kp *kp; /**< @brief kp -- Kernel process that we belong to (must match pe). */
 
-    void *cur_state; /**< @brief Current application LP data */
+    LP_State* cur_state; /**< @brief Current application LP data */
     tw_lptype  *type; /**< @brief Type of this LP, including service callbacks */
     tw_rng_stream *rng; /**< @brief  RNG stream array for this LP */
 

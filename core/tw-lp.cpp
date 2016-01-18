@@ -88,7 +88,7 @@ tw_init_lps(tw_pe * me)
 
 		// Allocate initial state vector for this LP
 		if(!lp->cur_state) {
-			lp->cur_state = tw_calloc(TW_LOC, "state vector", lp->type->state_sz, 1);
+            lp->cur_state = (LP_State*)::operator new(lp->type->state_sz);
 		}
 
 #ifndef USE_RIO

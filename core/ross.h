@@ -80,9 +80,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************/
 #include <mpi.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
 
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(a) ( sizeof((a)) / sizeof((a)[0]) )
@@ -104,6 +104,9 @@ extern "C" {
  ********************************************************************/
 
 #include "config.h"
+
+#include <set>
+#include <unordered_map>
 
 #include <errno.h>
 #include <sys/types.h>
@@ -215,8 +218,8 @@ typedef uint64_t tw_lpid;
 #include "../IO/io.h"
 #endif
 
-#ifdef __cplusplus
-}
-#endif
+//#ifdef __cplusplus
+//}
+//#endif
 
 #endif

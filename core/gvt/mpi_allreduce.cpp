@@ -8,6 +8,7 @@ static unsigned int g_tw_gvt_no_change = 0;
 static tw_stat all_reduce_cnt = 0;
 static unsigned int gvt_cnt = 0;
 static unsigned int gvt_force = 0;
+static double globalGVT;
 
 static const tw_optdef gvt_opts [] =
 {
@@ -153,6 +154,8 @@ tw_gvt_step2(tw_pe *me)
 	me->GVT = gvt;
 	me->gvt_status = TW_GVT_NORMAL;
 
+    globalGVT = me->GVT;
+
 	gvt_cnt = 0;
 
 	// update GVT timing stats
@@ -167,4 +170,22 @@ tw_gvt_step2(tw_pe *me)
 	  }
 
 	g_tw_gvt_done++;
+
+    // Build a list of all of the LP_State values
+    std::set<LP_State *> curStates;
+    for (int i = 0; i < g_tw_nlp; i++) {
+        curStates.insert(g_tw_lp[i]->cur_state);
+    }
+
+    auto theEnd = curStates.end();
+
+    for (auto it = theStateMap.begin(); it != theStateMap.end();) {
+        if (it->first < globalGVT &&
+            theEnd == curStates.find(it->second.get())) {
+            it = theStateMap.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
 }

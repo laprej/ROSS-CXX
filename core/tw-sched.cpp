@@ -202,7 +202,10 @@ static void tw_sched_batch(tw_pe * me) {
 	// if NOT A SUSPENDED LP THEN FORWARD PROC EVENTS
 	if( !(clp->suspend_flag) )
 	  {
-	    (*clp->type->event)(clp->cur_state, &cev->cv, 
+          LP_State *cp = clp->cur_state->clone(cev->recv_ts);
+          clp->cur_state = cp;
+
+	    (*clp->type->event)(clp->cur_state, &cev->cv,
 				tw_event_data(cev), clp);
 	  }
 	ckp->s_nevent_processed++;
