@@ -313,7 +313,6 @@ struct tw_event {
 class LP_State {
 public:
     virtual LP_State * clone(double ts) = 0;
-    virtual ~LP_State() { }
 };
 
 extern std::unordered_map<double, std::shared_ptr<LP_State> > theStateMap;
