@@ -310,12 +310,28 @@ struct tw_event {
     tw_out *out_msgs;               /**< @brief Output messages */
 };
 
-class LP_State {
+class LP_State
+{
 public:
-    virtual LP_State * clone(double ts) = 0;
+    virtual LP_State * clone(double ts) const = 0;
 };
 
 extern std::unordered_map<double, std::shared_ptr<LP_State> > theStateMap;
+
+template <typename Derived>
+class LP_State_CRTP : public LP_State
+{
+public:
+    LP_State_CRTP() = default;
+    LP_State_CRTP(const LP_State_CRTP &l) = default;
+
+    LP_State * clone(double ts) const {
+        return new Derived(static_cast<Derived const &>(*this));
+//        std::shared_ptr<LP_State> ret = std::make_shared<Derived>(*this);
+//        theStateMap[ts] = ret;
+//        return ret.get();
+    }
+};
 
 /**
  * tw_lp @brief LP State Structure
