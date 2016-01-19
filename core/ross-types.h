@@ -326,10 +326,9 @@ public:
     LP_State_CRTP(const LP_State_CRTP &l) = default;
 
     LP_State * clone(double ts) const {
-        return new Derived(static_cast<Derived const &>(*this));
-//        std::shared_ptr<LP_State> ret = std::make_shared<Derived>(*this);
-//        theStateMap[ts] = ret;
-//        return ret.get();
+        std::shared_ptr<LP_State> ret = std::make_shared<Derived>(static_cast<Derived const &>(*this));
+        theStateMap[ts] = ret;
+        return ret.get();
     }
 };
 
