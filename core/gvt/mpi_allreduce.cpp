@@ -63,6 +63,27 @@ tw_gvt_step1(tw_pe *me)
 	me->gvt_status = TW_GVT_COMPUTE;
 }
 
+void cleanup(tw_pe *me)
+{
+    // Build a list of all of the LP_State values
+    std::set<LP_State *> curStates;
+    for (int i = 0; i < g_tw_nlp; i++) {
+        curStates.insert(g_tw_lp[i]->cur_state);
+    }
+
+    const auto theEnd = curStates.end();
+
+    for (auto it = theStateMap.begin(), e = theStateMap.end(); it != e;) {
+        if (it->first < globalGVT &&
+            theEnd == curStates.find(it->second.get())) {
+            it = theStateMap.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
+}
+
 void
 tw_gvt_step2(tw_pe *me)
 {
@@ -171,21 +192,5 @@ tw_gvt_step2(tw_pe *me)
 
 	g_tw_gvt_done++;
 
-    // Build a list of all of the LP_State values
-    std::set<LP_State *> curStates;
-    for (int i = 0; i < g_tw_nlp; i++) {
-        curStates.insert(g_tw_lp[i]->cur_state);
-    }
-
-    auto theEnd = curStates.end();
-
-    for (auto it = theStateMap.begin(); it != theStateMap.end();) {
-        if (it->first < globalGVT &&
-            theEnd == curStates.find(it->second.get())) {
-            it = theStateMap.erase(it);
-        }
-        else {
-            ++it;
-        }
-    }
+    cleanup(me);
 }
