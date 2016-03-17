@@ -106,7 +106,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "config.h"
 
 #include <set>
-#include <unordered_map>
+#include <deque>
 
 #include <errno.h>
 #include <sys/types.h>

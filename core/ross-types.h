@@ -316,7 +316,7 @@ public:
     virtual LP_State * clone(double ts) const = 0;
 };
 
-extern std::unordered_map<double, std::shared_ptr<LP_State> > theStateMap;
+extern std::deque<std::pair<double, std::shared_ptr<LP_State> > > theStateMap;
 
 template <typename Derived>
 class LP_State_CRTP : public LP_State
@@ -327,7 +327,7 @@ public:
 
     LP_State * clone(double ts) const {
         std::shared_ptr<LP_State> ret = std::make_shared<Derived>(static_cast<Derived const &>(*this));
-        theStateMap[ts] = ret;
+        theStateMap.push_back(std::make_pair(ts, ret));
         return ret.get();
     }
 };
