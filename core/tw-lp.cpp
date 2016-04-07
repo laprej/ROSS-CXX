@@ -47,6 +47,8 @@ tw_lp_settype(tw_lpid id, tw_lptype * type)
         if (type->state_sz > g_tw_delta_sz) {
             g_tw_delta_sz = type->state_sz;
         }
+
+    lp->cur_state = object::clone(type->startState);
 }
 
 void
@@ -86,10 +88,6 @@ tw_init_lps(tw_pe * me)
 		if (lp->pe != me)
 			continue;
 
-		// Allocate initial state vector for this LP
-		if(!lp->cur_state) {
-            lp->cur_state = (LP_State*)::operator new(lp->type->state_sz);
-		}
 
 #ifndef USE_RIO
 		if (lp->type->init)
@@ -97,7 +95,7 @@ tw_init_lps(tw_pe * me)
 			me->cur_event = me->abort_event;
 			me->cur_event->caused_by_me = NULL;
 
-			(*(init_f)lp->type->init) (lp->cur_state, lp);
+			(*(init_f)lp->type->init) (lp->cur_state.get(), lp);
 
 			if (me->cev_abort)
 				tw_error(TW_LOC, "ran out of events during init");
@@ -141,7 +139,7 @@ void tw_pre_run_lps (tw_pe * me) {
 			me->cur_event = me->abort_event;
 			me->cur_event->caused_by_me = NULL;
 
-			(*(pre_run_f)lp->type->pre_run) (lp->cur_state, lp);
+			(*(pre_run_f)lp->type->pre_run) (lp->cur_state.get(), lp);
 
 			if (me->cev_abort)
 				tw_error(TW_LOC, "ran out of events during pre_run");

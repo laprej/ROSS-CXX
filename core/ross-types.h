@@ -1,6 +1,8 @@
 #ifndef INC_ross_types_h
 #define INC_ross_types_h
 
+#include "/Users/laprej/ROSS-CXX/core/object.h"
+
 /** @file ross-types.h
  *  @brief Definition of ROSS basic types
  */
@@ -85,6 +87,8 @@ typedef void (*revent_f) (void *sv, tw_bf * cv, void *msg, tw_lp * me);
 typedef void (*final_f) (void *sv, tw_lp * me);
 typedef void (*statecp_f) (void *sv_dest, void *sv_src);
 
+class LP_State;
+
 /**
  * tw_lptype
  * @brief Function Pointers for ROSS Event Handlers
@@ -98,6 +102,7 @@ struct tw_lptype {
     final_f final; /**< @brief Final handler routine */
     map_f map; /**< @brief LP Mapping of LP gid -> remote PE routine */
     size_t state_sz; /**< @brief Number of bytes that SV is for the LP */
+    LP_State *startState;
 };
 
 // Type mapping function: gid -> type index
@@ -310,27 +315,12 @@ struct tw_event {
     tw_out *out_msgs;               /**< @brief Output messages */
 };
 
-class LP_State
+class LP_State : public object::cloneable<LP_State>
 {
 public:
-    virtual LP_State * clone(double ts) const = 0;
 };
 
-extern std::deque<std::pair<double, std::shared_ptr<LP_State> > > theStateMap;
-
-template <typename Derived>
-class LP_State_CRTP : public LP_State
-{
-public:
-    LP_State_CRTP() = default;
-    LP_State_CRTP(const LP_State_CRTP &l) = default;
-
-    LP_State * clone(double ts) const {
-        std::shared_ptr<LP_State> ret = std::make_shared<Derived>(static_cast<Derived const &>(*this));
-        theStateMap.push_back(std::make_pair(ts, ret));
-        return ret.get();
-    }
-};
+extern std::deque<std::pair<double, std::unique_ptr<LP_State> > > theStateMap;
 
 /**
  * tw_lp @brief LP State Structure
@@ -355,7 +345,7 @@ struct tw_lp {
     */
     tw_kp *kp; /**< @brief kp -- Kernel process that we belong to (must match pe). */
 
-    LP_State* cur_state; /**< @brief Current application LP data */
+    std::unique_ptr<LP_State> cur_state; /**< @brief Current application LP data */
     tw_lptype  *type; /**< @brief Type of this LP, including service callbacks */
     tw_rng_stream *rng; /**< @brief  RNG stream array for this LP */
 

@@ -202,10 +202,14 @@ static void tw_sched_batch(tw_pe * me) {
 	// if NOT A SUSPENDED LP THEN FORWARD PROC EVENTS
 	if( !(clp->suspend_flag) )
 	  {
-          LP_State *cp = clp->cur_state->clone(cev->recv_ts);
-          clp->cur_state = cp;
+          static LP_State *stateCopy = nullptr;
+          static tw_stime stateTime = 0.0;
 
-	    (*clp->type->event)(clp->cur_state, &cev->cv,
+          std::unique_ptr<LP_State> cp = object::clone(clp->cur_state.get());
+          //LP_State *cp = clp->cur_state->clone();
+          clp->cur_state.swap(cp);
+
+	    (*clp->type->event)(clp->cur_state.get(), &cev->cv,
 				tw_event_data(cev), clp);
 	  }
 	ckp->s_nevent_processed++;
@@ -311,7 +315,7 @@ void tw_scheduler_sequential(tw_pe * me) {
         }
 
         reset_bitfields(cev);
-        (*clp->type->event)(clp->cur_state, &cev->cv, tw_event_data(cev), clp);
+        (*clp->type->event)(clp->cur_state.get(), &cev->cv, tw_event_data(cev), clp);
 
         if (me->cev_abort){
             tw_error(TW_LOC, "insufficient event memory");
@@ -396,7 +400,7 @@ void tw_scheduler_conservative(tw_pe * me) {
 
             start = tw_clock_read();
             reset_bitfields(cev);
-            (*clp->type->event)(clp->cur_state, &cev->cv, tw_event_data(cev), clp);
+            (*clp->type->event)(clp->cur_state.get(), &cev->cv, tw_event_data(cev), clp);
 
             ckp->s_nevent_processed++;
             me->stats.s_event_process += tw_clock_read() - start;
@@ -504,7 +508,7 @@ void tw_scheduler_optimistic_debug(tw_pe * me) {
 
         /* don't update GVT */
         reset_bitfields(cev);
-        (*clp->type->event)(clp->cur_state, &cev->cv, tw_event_data(cev), clp);
+        (*clp->type->event)(clp->cur_state.get(), &cev->cv, tw_event_data(cev), clp);
 
         ckp->s_nevent_processed++;
 

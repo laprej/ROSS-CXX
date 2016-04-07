@@ -99,7 +99,7 @@ tw_stats(tw_pe * me)
 		{
 			lp = tw_getlp(i);
 			if (lp->type->final)
-				(*lp->type->final) (lp->cur_state, lp);
+				(*lp->type->final) (lp->cur_state.get(), lp);
 		}
 	}
 

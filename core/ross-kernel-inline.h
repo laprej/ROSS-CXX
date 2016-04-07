@@ -92,7 +92,7 @@ static inline int
 static inline void * 
      tw_getstate(tw_lp * lp)
 {
-  return lp->cur_state;
+  return lp->cur_state.get();
 }
 
 static inline tw_stime 

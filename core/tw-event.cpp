@@ -182,7 +182,7 @@ void tw_event_rollback(tw_event * event) {
 	goto jump_over_rc_event_handler;
       }
 
-    (*dest_lp->type->revent)(dest_lp->cur_state, &event->cv, tw_event_data(event), dest_lp);
+    (*dest_lp->type->revent)(dest_lp->cur_state.get(), &event->cv, tw_event_data(event), dest_lp);
 
 jump_over_rc_event_handler:
     if (event->delta_buddy) {

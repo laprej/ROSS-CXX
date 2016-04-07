@@ -65,7 +65,7 @@ tw_gvt_step1(tw_pe *me)
 
 struct LessThan
 {
-    bool operator() (const std::pair<double, std::shared_ptr<LP_State> > x, double y) const
+    bool operator() (const std::pair<double, std::unique_ptr<LP_State> > &x, double y) const
     {
         return (x.first < y);
     }
@@ -73,24 +73,6 @@ struct LessThan
 
 void cleanup(tw_pe *me)
 {
-    // Build a list of all of the LP_State values
-    std::set<LP_State *> curStates;
-    for (int i = 0; i < g_tw_nlp; i++) {
-        curStates.insert(g_tw_lp[i]->cur_state);
-    }
-
-    const auto theEnd = curStates.end();
-
-    auto x = std::lower_bound(theStateMap.begin(), theStateMap.end(), globalGVT, LessThan());
-
-    for (auto it = theStateMap.begin(), e = x; it < e;) {
-        if (theEnd == curStates.find(it->second.get())) {
-            it = theStateMap.erase(it);
-        }
-        else {
-            break;
-        }
-    }
 }
 
 void
