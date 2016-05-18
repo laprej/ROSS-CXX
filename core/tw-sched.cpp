@@ -202,14 +202,15 @@ static void tw_sched_batch(tw_pe * me) {
 	// if NOT A SUSPENDED LP THEN FORWARD PROC EVENTS
 	if( !(clp->suspend_flag) )
 	  {
-          static tw_stime stateTime = 0.0;
-
           std::unique_ptr<LP_State> cp = object::clone(clp->cur_state.get());
           clp->cur_state.swap(cp);
 
-          auto x = std::make_pair(stateTime, std::forward<std::unique_ptr<LP_State> >(cp));
+          // This is slightly wrong as this is the ts for the
+          // current event and not for the previous event
+          auto x = std::make_pair(cev->recv_ts, std::move(cp));
 
-          theStateMap.push_back(std::forward<std::pair<double, std::unique_ptr<LP_State> > >(x));
+          // emplace_back is (typically) never less efficient than push_back
+          theStateMap.emplace_back(std::move(x));
 
 	    (*clp->type->event)(clp->cur_state.get(), &cev->cv,
 				tw_event_data(cev), clp);
