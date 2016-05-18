@@ -73,6 +73,10 @@ struct LessThan
 
 void cleanup(tw_pe *me)
 {
+    // We can probably do better here if we know everything is sorted
+    while (theStateMap.size() && theStateMap.front().first < globalGVT) {
+        theStateMap.pop_front();
+    }
 }
 
 void
