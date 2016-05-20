@@ -68,7 +68,7 @@ phold_event_handler(phold_state * s, tw_bf * bf, phold_message * m, tw_lp * lp)
 		/* dest += offset_lpid; */
 		/* if(dest >= ttl_lps) */
 		/* 	dest -= ttl_lps; */
-        s->dummy_state = tw_rand_ulong(lp->rng, 0, 1000000);
+        s->set_dummy_state(tw_rand_ulong(lp->rng, 0, 1000000));
 	} else
 	{
 		bf->c1 = 0;
@@ -96,6 +96,8 @@ phold_finish(phold_state * s, tw_lp * lp)
 {
 }
 
+phold_state ps;
+
 tw_lptype       mylps[] = {
 	{(init_f) phold_init,
      /* (pre_run_f) phold_pre_run, */
@@ -104,8 +106,8 @@ tw_lptype       mylps[] = {
 	 (revent_f) phold_event_handler_rc,
 	 (final_f) phold_finish,
 	 (map_f) phold_map,
-	sizeof(phold_state)},
-	{0},
+	sizeof(phold_state),
+    &ps}
 };
 
 const tw_optdef app_opt[] =

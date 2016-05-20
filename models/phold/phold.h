@@ -2,18 +2,29 @@
 #define INC_phold_h
 
 #include <ross.h>
-#include <boost/flyweight.hpp>
 
 	/*
 	 * PHOLD Types
 	 */
 
-typedef struct phold_state phold_state;
-typedef struct phold_message phold_message;
-
-struct phold_state
+class phold_state : public LP_State
 {
-	boost::flyweight<long>	 dummy_state;
+    std::shared_ptr<long>	 dummy_state;
+
+public:
+    phold_state() = default;
+    phold_state(const phold_state &a) = default;
+
+    phold_state(phold_state&& rhs) = default;              // move constructor
+    phold_state& operator=(phold_state&& rhs) = default;   // move assignment operator
+
+    phold_state * clone() const override
+    {
+        return new phold_state(*this);
+    }
+
+    long get_dummy_state() { return *dummy_state.get(); }
+    void set_dummy_state(long l) { dummy_state = std::make_shared<long>(l); }
 };
 
 struct phold_message
