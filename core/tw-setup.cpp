@@ -239,6 +239,8 @@ void tw_define_lps(tw_lpid nlp, size_t msg_sz) {
             tw_rand_init_streams(g_tw_lp[i], g_tw_nRNG_per_lp);
         }
     }
+
+    theStateMap.resize(g_tw_nlp);
 }
 
 static void late_sanity_check(void) {

@@ -209,8 +209,9 @@ static void tw_sched_batch(tw_pe * me) {
           // current event and not for the previous event
           auto x = std::make_pair(cev->recv_ts, std::move(cp));
 
-          // emplace_back is (typically) never less efficient than push_back
-          theStateMap.emplace_back(std::move(x));
+          theStateMap[clp->id].insert(
+             std::upper_bound(theStateMap[clp->id].begin(), theStateMap[clp->id].end(), x),
+             std::move(x));
 
 	    (*clp->type->event)(clp->cur_state.get(), &cev->cv,
 				tw_event_data(cev), clp);

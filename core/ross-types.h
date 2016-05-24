@@ -320,7 +320,10 @@ class LP_State : public object::cloneable<LP_State>
 public:
 };
 
-extern std::deque<std::pair<double, std::unique_ptr<LP_State> > > theStateMap;
+typedef std::pair<double, std::unique_ptr<LP_State> > PDP;
+typedef std::deque<PDP> DPDP;
+
+extern std::vector<DPDP> theStateMap;
 
 /**
  * tw_lp @brief LP State Structure
