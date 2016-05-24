@@ -73,9 +73,10 @@ struct LessThan
 
 void cleanup(tw_pe *me)
 {
-    // We can probably do better here if we know everything is sorted
-    while (!theStateMap.empty() && theStateMap.front().first < globalGVT) {
-        theStateMap.pop_front();
+    for (int i = 0; i < g_tw_nlp; i++) {
+        while (!theStateMap[i].empty() && theStateMap[i].front().first < globalGVT) {
+            theStateMap[i].pop_front();
+        }
     }
 }
 
