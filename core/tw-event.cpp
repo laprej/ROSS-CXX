@@ -182,7 +182,25 @@ void tw_event_rollback(tw_event * event) {
 	goto jump_over_rc_event_handler;
       }
 
+#if 1
     (*dest_lp->type->revent)(dest_lp->cur_state.get(), &event->cv, tw_event_data(event), dest_lp);
+#else
+    {
+        auto search = std::make_pair(event->recv_ts, std::move(dest_lp->cur_state));
+
+        if (std::binary_search(theStateMap[dest_lp->id].begin(), theStateMap[dest_lp->id].end(), search)) {
+            printf("found the event to remove\n");
+            tw_end();
+        }
+        else {
+            // This means it's the currently executing event
+            // Restore the prior values
+            auto previousState = std::move(theStateMap[dest_lp->id].back());
+            theStateMap[dest_lp->id].pop_back();
+            std::swap(previousState.second, dest_lp->cur_state);
+        }
+    }
+#endif
 
 jump_over_rc_event_handler:
     if (event->delta_buddy) {
