@@ -4,6 +4,8 @@
 #ifndef Object_h
 #define Object_h
 
+#include <memory>
+
 namespace object
 {
     template<typename T>

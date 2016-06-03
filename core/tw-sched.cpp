@@ -1,5 +1,7 @@
 #include <ross.h>
 
+#include <algorithm>
+
 /**
  * \brief Reset the event bitfield prior to entering the event handler
  *  post-reverse - reset the bitfield so that a potential re-running of the

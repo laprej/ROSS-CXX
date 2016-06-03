@@ -1,6 +1,8 @@
 #include <ross.h>
 #include <assert.h>
 
+#include <algorithm>
+
 static inline void link_causality (tw_event *nev, tw_event *cev) {
     nev->cause_next = cev->caused_by_me;
     cev->caused_by_me = nev;
