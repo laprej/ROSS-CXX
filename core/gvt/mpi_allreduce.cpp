@@ -63,14 +63,6 @@ tw_gvt_step1(tw_pe *me)
 	me->gvt_status = TW_GVT_COMPUTE;
 }
 
-struct LessThan
-{
-    bool operator() (const std::pair<double, std::unique_ptr<LP_State> > &x, double y) const
-    {
-        return (x.first < y);
-    }
-};
-
 void cleanup(tw_pe *me)
 {
     for (int i = 0; i < g_tw_nlp; i++) {
