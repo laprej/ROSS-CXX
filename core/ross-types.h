@@ -318,6 +318,7 @@ struct tw_event {
 class LP_State : public object::cloneable<LP_State>
 {
 public:
+    tw_rng_stream rng;
 };
 
 typedef std::pair<double, std::unique_ptr<LP_State> > PDP;
@@ -350,7 +351,6 @@ struct tw_lp {
 
     std::unique_ptr<LP_State> cur_state; /**< @brief Current application LP data */
     tw_lptype  *type; /**< @brief Type of this LP, including service callbacks */
-    tw_rng_stream *rng; /**< @brief  RNG stream array for this LP */
 
   /* tw_suspend variables */
   tw_event    *suspend_event;

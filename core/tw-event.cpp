@@ -182,7 +182,7 @@ void tw_event_rollback(tw_event * event) {
 	goto jump_over_rc_event_handler;
       }
 
-#if 1
+#if 0
     (*dest_lp->type->revent)(dest_lp->cur_state.get(), &event->cv, tw_event_data(event), dest_lp);
 #else
     {

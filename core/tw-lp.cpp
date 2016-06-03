@@ -49,6 +49,8 @@ tw_lp_settype(tw_lpid id, tw_lptype * type)
         }
 
     lp->cur_state = object::clone(type->startState);
+
+    tw_rand_init_streams(lp, 1);
 }
 
 void

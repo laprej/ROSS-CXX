@@ -324,10 +324,10 @@ tw_rand_init_streams(tw_lp * lp, unsigned int nstreams)
 	if(nstreams > g_tw_nRNG_per_lp)
             tw_error(TW_LOC, "LP %lu asked for more RNG streams (%d) than the global maximum (g_tw_nRNG_per_lp:%d)\n", lp->gid, nstreams, g_tw_nRNG_per_lp);
 
-        lp->rng = (tw_rng_stream *) tw_calloc(TW_LOC, "LP RNG Streams", sizeof(*lp->rng), nstreams);
+        lp->cur_state->rng = *(tw_rng_stream *) tw_calloc(TW_LOC, "LP RNG Streams", sizeof(lp->cur_state->rng), nstreams);
 
 	for(i = 0; i < nstreams; i++) {
-            tw_rand_initial_seed(&lp->rng[i], (lp->gid * g_tw_nRNG_per_lp) + i);
+            tw_rand_initial_seed(&(lp->cur_state->rng), (lp->gid * g_tw_nRNG_per_lp) + i);
         }
 }
 

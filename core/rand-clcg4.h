@@ -37,6 +37,8 @@ struct tw_rng_stream
 	int32_t	 Cg[4];
 
 	//tw_rng	*rng;
+    tw_rng_stream() = default;
+    tw_rng_stream(const tw_rng_stream &r) = default;
 
 #ifdef RAND_NORMAL
 	double	 tw_normal_u1;
