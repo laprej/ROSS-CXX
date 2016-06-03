@@ -20,7 +20,7 @@ phold_init(phold_state * s, tw_lp * lp)
 	      {
 		tw_event_send(
 			      tw_event_new(lp->gid, 
-					   tw_rand_exponential(lp->rng, mean) + lookahead + (tw_stime)(lp->gid % (unsigned int)g_tw_ts_end), 
+					   tw_rand_exponential(&lp->cur_state->rng, mean) + lookahead + (tw_stime)(lp->gid % (unsigned int)g_tw_ts_end),
 					   lp));
 	      }
 	  }
@@ -30,7 +30,7 @@ phold_init(phold_state * s, tw_lp * lp)
 	      {
 		tw_event_send(
 			      tw_event_new(lp->gid, 
-					   tw_rand_exponential(lp->rng, mean) + lookahead, 
+					   tw_rand_exponential(&lp->cur_state->rng, mean) + lookahead,
 					   lp));
 	      }
 	  }
@@ -41,9 +41,9 @@ phold_pre_run(phold_state * s, tw_lp * lp)
 {
     tw_lpid	 dest;
 
-	if(tw_rand_unif(lp->rng) <= percent_remote)
+	if(tw_rand_unif(&lp->cur_state->rng) <= percent_remote)
 	{
-		dest = tw_rand_integer(lp->rng, 0, ttl_lps - 1);
+		dest = tw_rand_integer(&lp->cur_state->rng, 0, ttl_lps - 1);
 	} else
 	{
 		dest = lp->gid;
@@ -52,7 +52,7 @@ phold_pre_run(phold_state * s, tw_lp * lp)
 	if(dest >= (g_tw_nlp * tw_nnodes()))
 		tw_error(TW_LOC, "bad dest");
 
-	tw_event_send(tw_event_new(dest, tw_rand_exponential(lp->rng, mean) + lookahead, lp));
+	tw_event_send(tw_event_new(dest, tw_rand_exponential(&lp->cur_state->rng, mean) + lookahead, lp));
 }
 
 void
@@ -60,15 +60,15 @@ phold_event_handler(phold_state * s, tw_bf * bf, phold_message * m, tw_lp * lp)
 {
 	tw_lpid	 dest;
 
-	if(tw_rand_unif(lp->rng) <= percent_remote)
+	if(tw_rand_unif(&lp->cur_state->rng) <= percent_remote)
 	{
 		bf->c1 = 1;
-		dest = tw_rand_integer(lp->rng, 0, ttl_lps - 1);
+		dest = tw_rand_integer(&lp->cur_state->rng, 0, ttl_lps - 1);
 		// Makes PHOLD non-deterministic across processors! Don't uncomment
 		/* dest += offset_lpid; */
 		/* if(dest >= ttl_lps) */
 		/* 	dest -= ttl_lps; */
-        s->set_dummy_state(tw_rand_ulong(lp->rng, 0, 1000000));
+        s->set_dummy_state(tw_rand_ulong(&lp->cur_state->rng, 0, 1000000));
 	} else
 	{
 		bf->c1 = 0;
@@ -78,17 +78,17 @@ phold_event_handler(phold_state * s, tw_bf * bf, phold_message * m, tw_lp * lp)
 	if(dest >= (g_tw_nlp * tw_nnodes()))
 		tw_error(TW_LOC, "bad dest");
 
-	tw_event_send(tw_event_new(dest, tw_rand_exponential(lp->rng, mean) + lookahead, lp));
+	tw_event_send(tw_event_new(dest, tw_rand_exponential(&lp->cur_state->rng, mean) + lookahead, lp));
 }
 
 void
 phold_event_handler_rc(phold_state * s, tw_bf * bf, phold_message * m, tw_lp * lp)
 {
-	tw_rand_reverse_unif(lp->rng);
-	tw_rand_reverse_unif(lp->rng);
+	tw_rand_reverse_unif(&lp->cur_state->rng);
+	tw_rand_reverse_unif(&lp->cur_state->rng);
 
 	if(bf->c1 == 1)
-		tw_rand_reverse_unif(lp->rng);
+		tw_rand_reverse_unif(&lp->cur_state->rng);
 }
 
 void
@@ -100,8 +100,8 @@ phold_state ps;
 
 tw_lptype       mylps[] = {
 	{(init_f) phold_init,
-     /* (pre_run_f) phold_pre_run, */
-     (pre_run_f) NULL,
+     (pre_run_f) phold_pre_run,
+     /* (pre_run_f) NULL, */
 	 (event_f) phold_event_handler,
 	 (revent_f) phold_event_handler_rc,
 	 (final_f) phold_finish,
@@ -129,6 +129,11 @@ int
 main(int argc, char **argv, char **env)
 {
 	int		 i;
+
+    i = 0;
+    while (i) {
+        continue;
+    }
 
         // get rid of error if compiled w/ MEMORY queues
         g_tw_memory_nqueues=1;
