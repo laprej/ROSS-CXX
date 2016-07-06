@@ -1,5 +1,8 @@
 # Welcome to Simplified ROSS!
 
+## THIS REPO SHOULD BE CONSIDERED EXPERIMENTAL
+## MASTER MAY NOT BE IN A VALID STATE
+
 Welcome to a leaner, meaner, *faster* version of ROSS.
 While the entire history of ROSS has been preserved in this repository, a major change in the directory structure has made getting the full history of a file somewhat of a pain.
 You may find the now-deprecated version at the [ROSS-Legacy tag](https://github.com/carothersc/ROSS/releases/tag/Legacy) in this repository.
