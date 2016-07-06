@@ -6,4 +6,4 @@
 	url = https://github.com/gonsie/template-model.git
 [submodule "models/ROSS-Models"]
 	path = models/ROSS-Models
-	url = https://github.com/carothersc/ROSS-Models
+	url = https://github.com/laprej/ROSS-Models
