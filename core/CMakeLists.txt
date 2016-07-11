@@ -5,6 +5,8 @@ SET(ross_srcs
 
 ListGC.h
 
+object.h
+
 queue/tw-queue.h
 queue/${QUEUE}.cpp
 

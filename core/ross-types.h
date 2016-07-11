@@ -1,7 +1,7 @@
 #ifndef INC_ross_types_h
 #define INC_ross_types_h
 
-#include "/Users/laprej/ROSS-CXX/core/object.h"
+#include "object.h"
 
 /** @file ross-types.h
  *  @brief Definition of ROSS basic types
