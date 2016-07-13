@@ -11,6 +11,9 @@ LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/core/cmake/")
 # We probably don't want this to run on every build.
 option(COVERALLS "Generate coveralls data" OFF)
 
+FIND_PACKAGE(Boost 1.58.0 REQUIRED COMPONENTS system)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+
 if (COVERALLS)
     include(Coveralls)
     coveralls_turn_on_coverage()
