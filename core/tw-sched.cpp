@@ -514,6 +514,15 @@ void tw_scheduler_optimistic_debug(tw_pe * me) {
 
         /* don't update GVT */
         reset_bitfields(cev);
+
+        std::unique_ptr<LP_State> cp = object::clone(clp->cur_state.get());
+        clp->cur_state.swap(cp);
+
+        auto x = std::make_pair(cev->recv_ts, std::move(cp));
+
+        theStateMap[clp->id].insert(std::upper_bound(theStateMap[clp->id].begin(), theStateMap[clp->id].end(), x),
+                                    std::move(x));
+
         (*clp->type->event)(clp->cur_state.get(), &cev->cv, tw_event_data(cev), clp);
 
         ckp->s_nevent_processed++;
